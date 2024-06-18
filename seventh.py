@@ -1,4 +1,4 @@
-# Basics of Python part-6 (oops concepts with inheritance)
+# Basics of Python part-7 (oops concepts with magic methods)
 
 class Employee:
     first_nm = '';
@@ -44,29 +44,26 @@ class Manager(Employee):
     def print_employees(self):
         for emp in self.employees:
             print('Emp Managed : ', emp.first_nm)
+
+    def __repr__(self) -> str:
+        return "Employee('{}','{}',{})".format(self.first_nm, self.last_nm, self.salary)
     
-
-emp = Developer('Xyz', 'Abc',1000, 'PHP')
-
-print('Calling the inheriten class and using all the class variables of parent class', emp.first_nm)
-
-# print('Visualizing the inheritance order', help(Developer))
-
-print('Calling other functions & variables of the parent class using object of child class : ', emp.raise_amount)
-emp.set_raise_amt(1.05)
-print('Changing parent class variables using object of child class : ', emp.raise_amount)
-
-emp = Developer('First', 'Last', 1000, 'PHP')
-print('Overriding the init method of parent class in child class', emp.prog_lang)
+    def __str__(self) -> str:
+        return "__str__ called : Employee('{}','{}',{})".format(self.first_nm, self.last_nm, self.salary)
+    
+    def __add__(self, other):
+        return self.salary + other.salary
 
 emp_1 = Developer('Xyz', 'Abc',1000, 'PHP')
 emp_2 = Developer('Abc', 'Def',1300, 'Python')
 
-mgr_1 = Manager('Manager','Last', 90000, [emp_1])
-print('List of employees managed by {}'.format(mgr_1.first_nm))
-mgr_1.add_employee(emp_2)
-mgr_1.print_employees()
+mgr_1 = Manager('Manager', 'Last', 9000, [])
+mgr_2 = Manager('Second', 'Manager', 12000, [])
 
-print('Checking whether an object is an instance of a given class using isinstance method :', isinstance(mgr_1,Manager))
+print("Printing out an object by using the __repr__ magic method : ",mgr_1)
+# repr(mgr_1)
+# str(mgr_1)
+print('The __add__ magic method for addition of 2 integers', int.__add__(1,2))
 
-print('Checking whether a class is a child of a given parent class using issubclass method :', issubclass(Manager, Employee))
+print('The __add__ magic method for addition of 2 attributes of an object', mgr_1 + mgr_2 )
+
